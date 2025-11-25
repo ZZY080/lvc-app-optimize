@@ -1,0 +1,47 @@
+{
+  "cli": {
+    "version": ">= 16.19.3",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "http://127.0.0.1:8000",
+        "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY": "pk_test_51QaWE3ConpAU9S9m2AQeBRhR49oLCVenEnaTkGfgDH3D1ng9WtG4GQUB1GpNoLtonXPozWNrADlkVdzyolRiwdHi00BWtPrS8y"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "simulator": true
+      }
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.leadvisor.net",
+        "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY": "pk_live_51O3TxkLsoCLUqBedLdb4tqzgkwmycHn7ImSGyqJ8n5gt9Ub6BP409OIEe8tDVbiWKh8sK91EAM99WlstYpSYFNwh00NzN8DdWH"
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "ios": {
+        "credentialsSource": "local",
+        "simulator": false
+      }
+    },
+    "production": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://api.leadvisor.net",
+        "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY": "pk_live_51O3TxkLsoCLUqBedLdb4tqzgkwmycHn7ImSGyqJ8n5gt9Ub6BP409OIEe8tDVbiWKh8sK91EAM99WlstYpSYFNwh00NzN8DdWH"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}

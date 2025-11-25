@@ -1,0 +1,4 @@
+// export const REVENUE_CAT_ANDROID_API_KEY =
+//   process.env.EXPO_PULIC_REVENUE_CAT_ANDROID_API_KEY;
+// export const REVENUE_CAT_IOS_API_KEY =
+//   process.env.EXPO_PULIC_REVENUE_CAT_IOS_API_KEY;
