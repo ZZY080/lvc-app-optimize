@@ -85,9 +85,26 @@ export default function Layout() {
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
+                    name="my/privacy-policy"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
                     name="setting/index"
                     options={{ headerShown: false }}
                   />
+                  <Stack.Screen
+                    name="setting/password"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="setting/language"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="setting/delete-account"
+                    options={{ headerShown: false }}
+                  />
+
                   <Stack.Screen
                     name="auth/login"
                     options={{ headerShown: false }}

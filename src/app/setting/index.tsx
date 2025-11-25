@@ -1,6 +1,5 @@
 import OperateItem from "@components/My/OperateItem/OperateItem";
 
-import { StackScreenParamList } from "@type/Navigation/ParamType";
 import { router } from "expo-router";
 
 import { StatusBar } from "expo-status-bar";
@@ -18,33 +17,33 @@ const SettingScreen = () => {
       id: string;
       type: string;
       text: string;
-      path: keyof StackScreenParamList | "";
+      path: any;
     }[]
   >([
     {
       id: "1",
       type: "",
       text: t("my:modify-password"),
-      path: "ChangePassword",
+      path: "/setting/password",
     },
 
     {
       id: "2",
       type: "",
       text: t("my:language-setting"),
-      path: "Language",
+      path: "/setting/language",
     },
     {
       id: "3",
       type: "",
       text: t("my:logout"),
-      path: "Login",
+      path: "/auth/login",
     },
     {
       id: "4",
       type: "",
       text: t("my:delete-account"),
-      path: "DeleteAccount",
+      path: "/setting/delete-account",
     },
   ]);
   const handleBack = () => {

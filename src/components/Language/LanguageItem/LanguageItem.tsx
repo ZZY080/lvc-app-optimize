@@ -1,4 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Check } from "lucide-react-native";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface LanguageItemProps {
   id: string;
@@ -24,12 +25,12 @@ const LanguageItem: React.FC<LanguageItemProps> = ({
       onPress={() => handleSelect()}
     >
       <Text style={styles.Text}>{text}</Text>
-      <Image
+      <Check
         style={{
           ...styles.Icon,
           display: index === languageIndex ? "flex" : "none",
         }}
-        source={require("@assets/language/correct.png")}
+        color={"#6b97e1"}
       />
     </TouchableOpacity>
   );

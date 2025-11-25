@@ -31,12 +31,12 @@ const OperateItem: React.FC<OperateItemProps> = ({ text, path }) => {
     }
   };
   const handleDetail = async (path: any) => {
-    if (path === "Login") {
+    if (path === "/auth/login") {
       dispatch(logout());
       router.back();
       return;
     }
-    if (path === "ChangePassword" || path === "DeleteAccount") {
+    if (path === "/setting/password" || path === "/setting/delete-account") {
       const userProfile = await getUserProfile();
       if (!userProfile) {
         return router.push("/auth/login");

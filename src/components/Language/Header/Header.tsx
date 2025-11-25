@@ -1,7 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
 import { switchLanguage } from "@redux/slices/languageSlice";
 import { RootState } from "@redux/store";
-import { ScreenProps } from "@type/Navigation/ScreenType";
+import { router } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,21 +12,18 @@ interface HeaderProps {
 }
 const Header: React.FC<HeaderProps> = ({ languageIndex, lang }) => {
   const { t, i18n } = useTranslation();
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   const persistorLanguageIndex = useSelector(
     (state: RootState) => state.language.languageIndex
   );
   const dispatch = useDispatch();
   const handleCancel = () => {
-    navigation.goBack();
+    router.back();
   };
   const handleDone = (languageIndex: number) => {
     dispatch(switchLanguage({ lang, languageIndex }));
     i18n.changeLanguage(lang).then(async () => {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: "Splash" }],
-      });
+      router.dismissAll();
+      router.replace("/(tabs)"); // 直接跳转到 Splash 页面，并替换当前路由
     });
   };
   return (

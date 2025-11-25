@@ -70,7 +70,7 @@ const MyScreen = () => {
       id: "5",
       type: "",
       text: t("my:privacy-policy"),
-      path: "PrivacyPolicy",
+      path: "/my/privacy-policy",
     },
   ]);
   const [loading, setLoading] = useState<boolean>(false);
