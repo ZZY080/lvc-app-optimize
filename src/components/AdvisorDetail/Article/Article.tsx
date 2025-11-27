@@ -2,9 +2,8 @@ import { fetcher } from "@api/request";
 import ArticleItem from "@components/Article/ArticleItem/ArticleItem";
 import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
-import { LOCALES_MAP } from "@configs/map.config";
+import { ARTICLE } from "@constants/url/url";
 import { RootState } from "@redux/store";
-import { ARTICLE } from "constants/url/url";
 import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -12,8 +11,6 @@ import {
   FlatList,
   RefreshControl,
   StyleSheet,
-  Text,
-  View,
 } from "react-native";
 import { useSelector } from "react-redux";
 interface ArticleProps {

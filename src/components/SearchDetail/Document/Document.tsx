@@ -2,10 +2,10 @@ import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import ResourceItem from "@components/Document/DocumentItem/DocumentItem";
 import { LOCALES_MAP } from "@configs/map.config";
+import { DOCUMENT } from "@constants/url/url";
 import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
 import { Document as DocumentType } from "@type/common/Document/Document.types";
-import { DOCUMENT } from "constants/url/url";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {

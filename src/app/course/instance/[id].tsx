@@ -16,6 +16,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CourseInstanceScreen = () => {
+  console.log("CourseInstanceScreen");
   const { instanceId } = useLocalSearchParams();
   const { t } = useTranslation();
   const [courseData, setCourseData] = useState<CourseInstance | null>(null);
@@ -26,6 +27,7 @@ const CourseInstanceScreen = () => {
       const response = await fetcher(`${COURSE_INSTANCE}/${instanceId}`, {
         method: "GET",
       });
+      console.log(response);
       if (response.status === ACCESS_TOKEN_EXPIRE_STATUS_CODE) {
         return router.push("/auth/login");
       }

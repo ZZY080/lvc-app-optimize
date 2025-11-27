@@ -1,6 +1,5 @@
-import { useNavigation } from "@react-navigation/native";
-import { ScreenProps } from "@type/Navigation/ScreenType";
 import { formatIsoTime } from "@utils/time/time";
+import { router } from "expo-router";
 import { CircleDot } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -23,12 +22,9 @@ const InsightWebinarItem: React.FC<InsightWebinarItemProps> = ({
   title,
   scheduledAt,
 }) => {
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   const { t } = useTranslation();
   const handleDetail = async () => {
-    navigation.navigate("WebinarDetail", {
-      slug: slug,
-    });
+    router.push(`/webinar/${slug}`);
   };
   return (
     <View

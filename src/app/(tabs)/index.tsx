@@ -253,7 +253,7 @@ const IndexScreen = () => {
           <Fragment>
             {/* 头部搜索页 */}
             <Pressable
-              onPress={() => navigation.navigate("Search")}
+              onPress={() => router.push("/search")}
               style={styles.SearchWrapper}
             >
               <View style={styles.SearchMain}>
@@ -294,7 +294,7 @@ const IndexScreen = () => {
                   hasBar={false}
                   hasMore={true}
                   title={t("index:latest-release")}
-                  path="Insight"
+                  path="/insight"
                   paddingHorizontal={15}
                   marginTop={10}
                 />
@@ -318,7 +318,7 @@ const IndexScreen = () => {
                   hasBar={false}
                   hasMore={true}
                   title={t("index:course")}
-                  path="Course"
+                  path="/course"
                   paddingHorizontal={15}
                   marginTop={25}
                 />
@@ -335,7 +335,7 @@ const IndexScreen = () => {
                   hasBar={false}
                   hasMore={true}
                   title={t("index:product")}
-                  path="Document"
+                  path="/document"
                   paddingHorizontal={15}
                   marginTop={25}
                 />

@@ -1,25 +1,13 @@
-import CustomIcon from "@components/Common/CustomIcon/CustomIcon";
-import { useNavigation } from "@react-navigation/native";
 import { Article } from "@type/common/Article/Article.types";
-import { ScreenProps } from "@type/Navigation/ScreenType";
 import { formatIsoTime } from "@utils/time/time";
-import {
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { router } from "expo-router";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 interface NewArticleItemProps {
   article: Article;
 }
 const NewArticleItem: React.FC<NewArticleItemProps> = ({ article }) => {
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   const handleDetail = () => {
-    navigation.navigate("ArticleDetail", {
-      slug: article.slug,
-    });
+    router.push(`/article/${article.slug}`);
   };
   return (
     <View style={styles.NewArticleItemWrapper}>

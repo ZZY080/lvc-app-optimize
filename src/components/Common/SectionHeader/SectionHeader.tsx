@@ -1,5 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import { ScreenParamList } from "@type/Navigation/ParamType";
+import { router } from "expo-router";
 import { ChevronRight } from "lucide-react-native";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -9,7 +8,7 @@ interface SectionHeaderProps {
   title?: string;
   marginTop?: number;
   paddingHorizontal?: number;
-  path?: keyof ScreenParamList | "";
+  path?: any;
   hasBar?: boolean;
   hasMore?: boolean;
 }
@@ -23,12 +22,11 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
   paddingHorizontal = 17,
 }) => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
   const handleDetail = () => {
     if (path === "") {
       return Alert.alert("暂无详情");
     }
-    navigation.navigate(path);
+    router.push(path);
   };
   return (
     <Pressable

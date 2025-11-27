@@ -3,10 +3,10 @@ import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import WebinarItem from "@components/Webinar/WebinarItem/WebinarItem";
 import { LOCALES_MAP } from "@configs/map.config";
+import { WEBINAR } from "@constants/url/url";
 import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
 import { Webinar as WebinarType } from "@type/common/Webinar/Webinar.types";
-import { WEBINAR } from "constants/url/url";
 import { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {

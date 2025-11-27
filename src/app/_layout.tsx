@@ -57,7 +57,31 @@ export default function Layout() {
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
+                    name="search/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="search/[q]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="article/[slug]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="webinar/[slug]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
                     name="solution/[id]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="counselor/[slug]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="course/index"
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
@@ -66,6 +90,14 @@ export default function Layout() {
                   />
                   <Stack.Screen
                     name="course/instance/[id]"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="document/index"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="document/[slug]"
                     options={{ headerShown: false }}
                   />
                   <Stack.Screen
@@ -107,6 +139,14 @@ export default function Layout() {
 
                   <Stack.Screen
                     name="auth/login"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="auth/register"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="auth/forget-password"
                     options={{ headerShown: false }}
                   />
                 </Stack>

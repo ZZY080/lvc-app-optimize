@@ -2,12 +2,11 @@ import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import CourseItem from "@components/Course/CourseItem/CourseItem";
 import { LOCALES_MAP } from "@configs/map.config";
-import { useNavigation } from "@react-navigation/native";
+import { COURSE } from "@constants/url/url";
 import { RootState } from "@redux/store";
 import { Course as CourseType } from "@type/common/Course/Course.types";
-import { ScreenProps } from "@type/Navigation/ScreenType";
-import { COURSE } from "constants/url/url";
-import { Fragment, useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -24,7 +23,6 @@ interface CourseProps {
 const Course: React.FC<CourseProps> = ({ q, topicId }) => {
   const lang = useSelector((state: RootState) => state.language.lang);
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(1); // 页码
   const [pageSize, setPageSize] = useState<number>(10); // 每页数据条数
@@ -149,16 +147,16 @@ const Course: React.FC<CourseProps> = ({ q, topicId }) => {
       setLoadingMore(false);
     }
   };
-  useEffect(() => {
-    const unsubscribeFocus = navigation.addListener("focus", () => {
+
+  useFocusEffect(
+    useCallback(() => {
       setPage(1);
       setHasMore(true);
-    });
-
-    return () => {
-      unsubscribeFocus();
-    };
-  }, [navigation, accessToken]);
+      return () => {
+        // 可选：屏幕失焦时清理
+      };
+    }, [accessToken])
+  );
 
   useEffect(() => {
     if (page === 1 && hasMore) {

@@ -1,19 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
+import { themes } from "@themes/themes";
 import { Document } from "@type/common/Document/Document.types";
-import { ScreenProps } from "@type/Navigation/ScreenType";
+import { router } from "expo-router";
+import { FileBox } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { FileBox } from "lucide-react-native";
-import { themes } from "@themes/themes";
 
 interface DocumentItemProps {
   document: Document;
 }
 const DocumentItem: React.FC<DocumentItemProps> = ({ document }) => {
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   const { t } = useTranslation();
   const handleDetail = () => {
-    navigation.navigate("DocumentDetail", { slug: document.product.slug });
+    router.push(`/document/${document.product.slug}`);
   };
   return (
     <Pressable

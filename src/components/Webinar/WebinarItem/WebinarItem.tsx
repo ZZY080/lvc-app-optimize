@@ -1,7 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
 import { Webinar } from "@type/common/Webinar/Webinar.types";
-import { ScreenProps } from "@type/Navigation/ScreenType";
 import { formatIsoTime } from "@utils/time/time";
+import { router } from "expo-router";
 import { CircleDot } from "lucide-react-native";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +16,6 @@ interface WebinarItemProps {
   webinar: Webinar;
 }
 const WebinarItem: React.FC<WebinarItemProps> = ({ webinar }) => {
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   const windowWidth = Dimensions.get("window").width;
   const [coverSize, setCoverSize] = useState<{
     width: number;
@@ -28,9 +26,7 @@ const WebinarItem: React.FC<WebinarItemProps> = ({ webinar }) => {
   });
   const { t } = useTranslation();
   const handleDetail = async () => {
-    navigation.navigate("WebinarDetail", {
-      slug: webinar.slug,
-    });
+    router.push(`/webinar/${webinar.slug}`);
   };
 
   return (

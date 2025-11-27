@@ -1,7 +1,6 @@
 import { fetcher } from "@api/request";
-import { LOGIN } from "@constants/url/url";
+import { REGISTER } from "@constants/url/url";
 import { useNavigation } from "@react-navigation/native";
-import { login } from "@redux/slices/authSlice";
 import { emailFormatCheck } from "@utils/email/email";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -20,19 +19,17 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const navigation = useNavigation<any>();
-
   const [isShow, setIsShow] = useState<boolean>(false);
-  const [isChecked, setChecked] = useState(false);
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [pwd, setPwd] = useState<string>("");
-  const dispatch = useDispatch();
+  const [confirmPwd, setConfirmPwd] = useState<string>("");
+  const { t, i18n } = useTranslation();
   const emailRef = useRef<TextInput | null>(null);
   const pwdRef = useRef<TextInput | null>(null);
-  const { t, i18n } = useTranslation();
-
+  const confirmPwdRef = useRef<TextInput>(null);
   const handleBack = () => {
     navigation.goBack();
   };
@@ -41,7 +38,16 @@ const LoginScreen = () => {
       ref.current.focus();
     }
   };
-  const handleLogin = async () => {
+
+  const handleConfirm = async () => {
+    if (name.trim() === "") {
+      return Toast.show({
+        type: "error",
+        text1: t("error:name-can-not-be-empty"),
+        position: "top",
+        visibilityTime: 2500,
+      });
+    }
     if (email.trim() === "") {
       return Toast.show({
         type: "error",
@@ -66,35 +72,45 @@ const LoginScreen = () => {
         visibilityTime: 2500,
       });
     }
+    if (confirmPwd.trim() === "") {
+      return Toast.show({
+        type: "error",
+        text1: t("error:confirm-password-can-not-be-empty"),
+        position: "top",
+        visibilityTime: 2500,
+      });
+    }
+    if (pwd !== confirmPwd) {
+      return Toast.show({
+        type: "error",
+        text1: t("error:password-do-not-match"),
+        position: "top",
+        visibilityTime: 2500,
+      });
+    }
     try {
-      const response = await fetcher(LOGIN, {
+      const response = await fetcher(REGISTER, {
         method: "POST",
         body: {
-          email: email,
+          name,
+          email,
           password: pwd,
         },
       });
-      const json = await response.json();
       if (!response.ok) {
         return Toast.show({
           type: "error",
-          text1: t("error:email-password-incorrect"),
+          text1: t("error:email-exist"),
           position: "top",
           visibilityTime: 2500,
         });
       }
-      const payload = json.payload;
-      const accessToken = payload.accessToken;
-      const registerToken = payload.token;
-      if (accessToken) {
-        // 触发login
-        dispatch(login(payload));
-        router.replace("/"); // 直接跳转到首页，并清空当前页面栈
-      }
+      const json = await response.json();
+      const registerToken = json.payload.token;
       if (registerToken) {
         navigation.navigate("ActiveAccount", {
           registerToken,
-          from: "login",
+          from: "register",
         });
       }
     } catch (error) {
@@ -106,26 +122,47 @@ const LoginScreen = () => {
       <Pressable style={styles.Content} onPress={() => Keyboard.dismiss()}>
         {/* 顶部状态栏 */}
         <StatusBar translucent={true} style="light" />
-
         <Pressable onPress={() => handleBack()} style={styles.Navigate}>
           <ChevronLeft color={"#27272A"} size={20} />
+          <Text style={{ fontSize: 14, fontWeight: 400 }}>
+            {t("register:login")}
+          </Text>
         </Pressable>
         {/* 卡片部分 */}
         <View style={styles.CardWrapper}>
           <View style={styles.CardMain}>
-            <Text style={styles.Title}>{t("login:login")}</Text>
-            {/* 邮箱 */}
+            <Text style={styles.Title}>{t("register:register")}</Text>
+            {/* 昵称 */}
             <Pressable
               style={styles.FieldContainer}
               onPress={() => handleFocus(emailRef)}
             >
-              <Text style={styles.FieldText}>{t("login:email")}</Text>
+              <Text style={styles.FieldText}>{t("register:name")}</Text>
               <TextInput
                 ref={emailRef}
                 autoComplete="off" // 禁用自动完成功能
                 autoCorrect={false} // 禁用自动纠正
                 maxLength={30}
-                placeholder={t("login:email-placeholder")}
+                placeholder={t("register:name-placeholder")}
+                onChangeText={setName}
+                style={{
+                  fontSize: 10,
+                  padding: 0,
+                }}
+              />
+            </Pressable>
+            {/* 邮箱 */}
+            <Pressable
+              style={styles.FieldContainer}
+              onPress={() => handleFocus(emailRef)}
+            >
+              <Text style={styles.FieldText}>{t("register:email")}</Text>
+              <TextInput
+                ref={emailRef}
+                autoComplete="off" // 禁用自动完成功能
+                autoCorrect={false} // 禁用自动纠正
+                maxLength={30}
+                placeholder={t("register:email-placeholder")}
                 onChangeText={setEmail}
                 style={{
                   fontSize: 10,
@@ -138,7 +175,7 @@ const LoginScreen = () => {
               style={styles.FieldContainer}
               onPress={() => handleFocus(pwdRef)}
             >
-              <Text style={styles.FieldText}>{t("login:password")}</Text>
+              <Text style={styles.FieldText}>{t("register:password")}</Text>
               <View style={styles.FieldIcon}>
                 <TextInput
                   ref={pwdRef}
@@ -146,7 +183,7 @@ const LoginScreen = () => {
                   autoCorrect={false} // 禁用自动纠正
                   secureTextEntry={!isShow}
                   maxLength={19}
-                  placeholder={t("login:password-placeholder")}
+                  placeholder={t("register:password-placeholder")}
                   onChangeText={setPwd}
                   style={{
                     flex: 1,
@@ -163,37 +200,54 @@ const LoginScreen = () => {
                 </TouchableOpacity>
               </View>
             </Pressable>
-            {/* 忘记密码 */}
-            <View style={styles.CheckboxForget}>
-              <TouchableOpacity
-                onPress={() => router.push("/auth/forget-password")}
-              >
-                <Text style={{ fontSize: 13, color: "#bdbdbf" }}>
-                  {t("login:forget-password")}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            {/* 登录按钮 */}
-            <View style={styles.Login}>
+            {/* 确认密码 */}
+            <Pressable
+              style={styles.FieldContainer}
+              onPress={() => handleFocus(confirmPwdRef)}
+            >
+              <Text style={styles.FieldText}>
+                {t("register:confirm-password")}
+              </Text>
+              <View style={styles.FieldIcon}>
+                <TextInput
+                  ref={confirmPwdRef}
+                  autoComplete="off" // 禁用自动完成功能
+                  autoCorrect={false} // 禁用自动纠正
+                  secureTextEntry={!isShow}
+                  maxLength={19}
+                  placeholder={t("register:confirm-password-placeholder")}
+                  onChangeText={setConfirmPwd}
+                  style={{
+                    flex: 1,
+                    fontSize: 10,
+                    padding: 0,
+                  }}
+                />
+                <TouchableOpacity onPress={() => setIsShow(!isShow)}>
+                  {isShow ? (
+                    <Eye size={20} color={"gray"} />
+                  ) : (
+                    <EyeOff size={20} color={"gray"} />
+                  )}
+                </TouchableOpacity>
+              </View>
+            </Pressable>
+            {/* 确认按钮 */}
+            <View style={styles.Confirm}>
               <Button
-                title={t("login:login")}
+                title={t("register:confirm")}
                 color="#6562a9"
-                onPress={() => handleLogin()}
+                onPress={() => handleConfirm()}
               />
-            </View>
-            <View style={styles.LineWord}>
-              <View style={styles.Line}></View>
-              <Text style={styles.Word}>{t("login:or")}</Text>
-              <View style={styles.Line}></View>
             </View>
             {/* 注册 */}
             <TouchableOpacity
-              style={styles.Register}
-              onPress={() => router.push("/auth/register")}
+              style={styles.SignIn}
+              onPress={() => router.back()}
             >
-              <Text>{t("login:have-account")}?</Text>
+              <Text>{t("register:have-singned-up")}?</Text>
               <Text style={{ marginLeft: 10, color: "#6562a9" }}>
-                {t("login:register")}
+                {t("register:sign-in-now")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -251,7 +305,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#e6e6e6",
     borderRadius: 10,
-    // height: 50,
     marginBottom: 10,
     paddingVertical: 5,
     paddingHorizontal: 10,
@@ -271,48 +324,27 @@ const styles = StyleSheet.create({
     height: 16,
     objectFit: "cover",
   },
-  // 记住
-  CheckboxForget: {
+  VerifyCode: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "flex-end",
     alignItems: "center",
   },
-  CheckBox: {
-    backgroundColor: "#ffffff",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "#d0d0d0",
-    width: 15,
-    height: 15,
-    borderRadius: 5,
+  // 获取验证码的字体
+  Text: {
+    fontSize: 10,
+    color: "white",
   },
-  Login: {
+  Confirm: {
     marginTop: 20,
     borderRadius: 10,
     overflow: "hidden",
     marginBottom: 20,
   },
-  LineWord: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  Line: {
-    flex: 1,
-    height: 1,
-    backgroundColor: "#e6e6e6",
-  },
-  Word: {
-    marginHorizontal: 10,
-    fontSize: 10,
-    color: "#e6e6e6",
-  },
-  Register: {
+  SignIn: {
     marginTop: 15,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
 });
-export default LoginScreen;
+export default RegisterScreen;

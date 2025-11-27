@@ -20,6 +20,7 @@ import { fetcher } from "@api/request";
 import AdvisorItem from "@components/Advisor/AdvisorItem/AdvisorItem";
 import { themes } from "@themes/themes";
 import { Advisor as AdvisorType } from "@type/common/Advisor/Advisor.types";
+import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Search } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -45,7 +46,7 @@ const CounselorScreen = () => {
   const [advisorList, setAdvisorList] = useState<AdvisorType[]>([]);
   // 跳转到搜索
   const handleSearch = () => {
-    navigation.navigate("Search");
+    router.push("/search");
   };
   const onChangeText = (text: string) => {
     setQ(text);

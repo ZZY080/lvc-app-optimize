@@ -1,18 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
 import { Article } from "@type/common/Article/Article.types";
-import { ScreenProps } from "@type/Navigation/ScreenType";
 import { formatIsoTime } from "@utils/time/time";
+import { router } from "expo-router";
 import { CircleDot } from "lucide-react-native";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 interface ArticleItemProps {
   article: Article;
 }
 const ArticleItem: React.FC<ArticleItemProps> = ({ article }) => {
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   const handleDetail = () => {
-    navigation.navigate("ArticleDetail", {
-      slug: article.slug,
-    });
+    router.push(`/article/${article.slug}`);
   };
   return (
     <Pressable style={styles.ArticleItemWrapper} onPress={() => handleDetail()}>

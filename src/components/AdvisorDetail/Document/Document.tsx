@@ -2,11 +2,11 @@ import { fetcher } from "@api/request";
 import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import ResourceItem from "@components/Document/DocumentItem/DocumentItem";
-import { useNavigation } from "@react-navigation/native";
+import { DOCUMENT } from "@constants/url/url";
 import { RootState } from "@redux/store";
 import { Document as DocumentType } from "@type/common/Document/Document.types";
-import { DOCUMENT } from "constants/url/url";
-import React, { Fragment, useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -20,7 +20,6 @@ interface DocumentProps {
 }
 const Document: React.FC<DocumentProps> = ({ memberProfileId }) => {
   const lang = useSelector((state: RootState) => state.language.lang);
-  const navigation = useNavigation();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(1);
@@ -124,17 +123,17 @@ const Document: React.FC<DocumentProps> = ({ memberProfileId }) => {
       setLoadingMore(false);
     }
   };
-  // 页面栈未调用
-  useEffect(() => {
-    const unsubscribeFocus = navigation.addListener("focus", () => {
+
+  useFocusEffect(
+    useCallback(() => {
       setPage(1);
       setHasMore(true);
-    });
-    // 清理监听器
-    return () => {
-      unsubscribeFocus();
-    };
-  }, [navigation]);
+
+      return () => {
+        // 可选：屏幕失焦时清理
+      };
+    }, [])
+  );
 
   useEffect(() => {
     if (page === 1 && hasMore) {
