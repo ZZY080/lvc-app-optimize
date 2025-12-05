@@ -1,13 +1,12 @@
-import { useNavigation } from "@react-navigation/native";
 import { Help } from "@type/common/Solution/Solution.types";
-import { ChevronRight, Users } from "lucide-react-native";
 import * as MailComposer from "expo-mail-composer";
+import { router } from "expo-router";
+import { ChevronRight } from "lucide-react-native";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 interface HelpItemProps {
   help: Help;
 }
 const HelpItem: React.FC<HelpItemProps> = ({ help }) => {
-  const navigation = useNavigation<any>();
   const sendEmail = async () => {
     try {
       const isAvailable = await MailComposer.isAvailableAsync();
@@ -24,8 +23,8 @@ const HelpItem: React.FC<HelpItemProps> = ({ help }) => {
     } catch (error) {}
   };
   const handleDetail = () => {
-    if (help.path === "Advisor") {
-      return navigation.navigate("Advisor");
+    if (help.path === "/counselor") {
+      return router.push(help.path);
     }
     sendEmail();
   };

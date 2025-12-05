@@ -1,21 +1,15 @@
-import { useNavigation } from "@react-navigation/native";
 import { themes } from "@themes/themes";
 import { Advisor } from "@type/common/Advisor/Advisor.types";
-import { ScreenProps } from "@type/Navigation/ScreenType";
+import { router } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 interface AdvisorItemProps {
   advisor: Advisor;
 }
 const AdvisorItem: React.FC<AdvisorItemProps> = ({ advisor }) => {
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   return (
     <Pressable
       style={styles.AdvisorItemWrapper}
-      onPress={() =>
-        navigation.navigate("AdvisorDetail", {
-          slug: advisor.slug,
-        })
-      }
+      onPress={() => router.push(`/counselor/${advisor.slug}`)}
     >
       <View style={styles.AdvisorItemMain}>
         <View style={styles.Logo}>

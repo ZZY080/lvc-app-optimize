@@ -1,6 +1,5 @@
 import { fetcher } from "@api/request";
 import { REGISTER } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { emailFormatCheck } from "@utils/email/email";
 import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -20,7 +19,6 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 const RegisterScreen = () => {
-  const navigation = useNavigation<any>();
   const [isShow, setIsShow] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -31,7 +29,7 @@ const RegisterScreen = () => {
   const pwdRef = useRef<TextInput | null>(null);
   const confirmPwdRef = useRef<TextInput>(null);
   const handleBack = () => {
-    navigation.goBack();
+    router.back();
   };
   const handleFocus = (ref: React.RefObject<TextInput | null>) => {
     if (ref.current) {
@@ -97,6 +95,7 @@ const RegisterScreen = () => {
           password: pwd,
         },
       });
+      console.log(response);
       if (!response.ok) {
         return Toast.show({
           type: "error",
@@ -108,9 +107,12 @@ const RegisterScreen = () => {
       const json = await response.json();
       const registerToken = json.payload.token;
       if (registerToken) {
-        navigation.navigate("ActiveAccount", {
-          registerToken,
-          from: "register",
+        router.push({
+          pathname: "/common/active-account",
+          params: {
+            registerToken,
+            from: "register",
+          },
         });
       }
     } catch (error) {

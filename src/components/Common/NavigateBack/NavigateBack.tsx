@@ -1,7 +1,6 @@
+import { router } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CustomIcon from "../CustomIcon/CustomIcon";
-import { useNavigation } from "@react-navigation/native";
-import { ScreenProps } from "@type/Navigation/ScreenType";
 
 interface NavigateBackProps {
   title?: string;
@@ -21,7 +20,6 @@ const NavigateBack: React.FC<NavigateBackProps> = ({
   color = "white",
   size = 15,
 }) => {
-  const navigation = useNavigation<ScreenProps["navigation"]>();
   return (
     <View
       style={{
@@ -33,10 +31,7 @@ const NavigateBack: React.FC<NavigateBackProps> = ({
       }}
     >
       <View style={styles.NavigateBackMain}>
-        <TouchableOpacity
-          style={styles.Icon}
-          onPress={() => navigation.goBack()}
-        >
+        <TouchableOpacity style={styles.Icon} onPress={() => router.back()}>
           <CustomIcon name="icon-back" color={color} size={size} />
         </TouchableOpacity>
         <Text style={styles.Title} numberOfLines={1} ellipsizeMode="tail">

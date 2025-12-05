@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   FilterWrapper: {
     paddingHorizontal: 10,
     backgroundColor: "#FFFFFF",
-    boxShadow: "0px 3px 5px 0px rgba(182, 182, 182, 0.25)",
+    // boxShadow: "0px 3px 5px 0px rgba(182, 182, 182, 0.25)",
   },
   FilterMain: {
     height: 45,

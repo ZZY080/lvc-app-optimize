@@ -1,5 +1,3 @@
-import { ScreenParamList } from "@type/Navigation/ParamType";
-
 export interface Solution {
   id: string;
   title: string;
@@ -11,6 +9,6 @@ export interface Help {
   icon: React.ReactNode;
   title: string;
   description: string;
-  path: keyof ScreenParamList | "";
+  path: string;
   hint: string;
 }

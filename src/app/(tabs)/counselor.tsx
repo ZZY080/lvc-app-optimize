@@ -1,8 +1,13 @@
+import { fetcher } from "@api/request";
+import AdvisorItem from "@components/Advisor/AdvisorItem/AdvisorItem";
 import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import { MEMBER_PROFILE, SERVICE_CATEGORY } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
-import { RootState } from "@redux/store";
+import { themes } from "@themes/themes";
+import { Advisor as AdvisorType } from "@type/common/Advisor/Advisor.types";
+import { router } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { Search } from "lucide-react-native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,28 +19,15 @@ import {
   Text,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
-
-import { fetcher } from "@api/request";
-import AdvisorItem from "@components/Advisor/AdvisorItem/AdvisorItem";
-import { themes } from "@themes/themes";
-import { Advisor as AdvisorType } from "@type/common/Advisor/Advisor.types";
-import { router } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Search } from "lucide-react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CounselorScreen = () => {
-  const lang = useSelector((state: RootState) => state.language.lang);
-  const navigation = useNavigation<any>();
-  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const { t } = useTranslation();
   const [q, setQ] = useState<string>("");
   const [categoryList, setCategoryList] = useState<
     { id: string; slug: string; name: string; description: string | null }[]
   >([]);
   const [serviceCategoryId, setServiceCategoryId] = useState<string>("");
-  const [show, setShow] = useState<boolean>(false); // 筛选国家
   const [countryCodeList, setCountryCodeList] = useState<string[]>([]); // 国家类型筛选
   const [page, setPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(10);
@@ -48,12 +40,7 @@ const CounselorScreen = () => {
   const handleSearch = () => {
     router.push("/search");
   };
-  const onChangeText = (text: string) => {
-    setQ(text);
-    setCountryCodeList([]);
-    setPage(1);
-    setHasMore(true);
-  };
+
   const onRefresh = () => {
     setRefreshing(true);
     setPage(1);
@@ -133,6 +120,7 @@ const CounselorScreen = () => {
   };
   // 下拉刷新数据
   const onRefreshAdvisorList = async () => {
+    console.log("refresh");
     try {
       let url = `${MEMBER_PROFILE}?page=${page}&perPage=${pageSize}`;
       if (q.trim().length > 0) {
@@ -227,15 +215,6 @@ const CounselorScreen = () => {
             <Text style={styles.Search}>{t("search:search")}</Text>
           </View>
         </Pressable>
-        {/* 筛选 */}
-        {/* <Filter
-          categoryList={categoryList}
-          setServiceCategoryId={setServiceCategoryId}
-          setPage={setPage}
-          setHasMore={setHasMore}
-          show={show}
-          setShow={setShow}
-        /> */}
         {/* 内容区域 */}
         <View style={styles.ScrollWrapper}>
           <View style={styles.ScrollMain}>
@@ -263,21 +242,12 @@ const CounselorScreen = () => {
                 ListFooterComponent={renderFooter} // 底部加载组件
                 showsVerticalScrollIndicator={false}
                 overScrollMode="never" //禁用溢出时的波纹效果 适用于 Android 平台
-                bounces={false} // 禁用溢出时的波纹效果 适用于 ios 平台
+                // bounces={false} // 禁用溢出时的波纹效果 适用于 ios 平台
+                bounces={true}
               />
             )}
           </View>
         </View>
-        {/* <CountryPicker
-          lang={lang}
-          show={show}
-          pickerButtonOnPress={(item) => {
-            setCountryCodeList([item.code]);
-            setPage(1);
-            setHasMore(true);
-            setShow(false);
-          }}
-        /> */}
       </View>
     </SafeAreaView>
   );

@@ -149,6 +149,14 @@ export default function Layout() {
                     name="auth/forget-password"
                     options={{ headerShown: false }}
                   />
+                  <Stack.Screen
+                    name="common/review"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen
+                    name="common/active-account"
+                    options={{ headerShown: false }}
+                  />
                 </Stack>
               </HeroUINativeProvider>
             </AppThemeProvider>

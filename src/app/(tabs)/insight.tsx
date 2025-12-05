@@ -8,12 +8,12 @@ import Webinar from "@components/Insight/Webinar/Webinar";
 import { RootState } from "@redux/store";
 
 import { USER_PROFILE } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { themes } from "@themes/themes";
 import { UserProfile } from "@type/common/User/User.types";
+import { router, useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Search } from "lucide-react-native";
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -21,7 +21,6 @@ import { useSelector } from "react-redux";
 
 const Insightcreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
 
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
 
@@ -55,7 +54,7 @@ const Insightcreen = () => {
 
   // 跳转到搜索
   const handleSearch = () => {
-    navigation.navigate("Search");
+    router.push("/search");
   };
   // 获取用户信息
   const getUserProfile = async () => {
@@ -73,18 +72,15 @@ const Insightcreen = () => {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    const unsubscribeFocus = navigation.addListener("focus", () => {
-      getUserProfile();
-    });
 
-    const unsubscribeBlur = navigation.addListener("blur", () => {});
-
-    return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
-    };
-  }, [navigation, accessToken]);
+  useFocusEffect(
+    useCallback(() => {
+      getUserProfile(); // 页面进入或重新聚焦时调用
+      return () => {
+        // 页面离开时清理逻辑，可选
+      };
+    }, [accessToken]) // 如果 accessToken 改变，也会重新调用
+  );
 
   return (
     <SafeAreaView

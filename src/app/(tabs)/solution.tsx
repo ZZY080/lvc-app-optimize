@@ -2,7 +2,6 @@ import { fetcher } from "@api/request";
 import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import { TOPIC } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { themes } from "@themes/themes";
 import { Solution } from "@type/common/Solution/Solution.types";
 import { router } from "expo-router";
@@ -14,7 +13,6 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const SolutionScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation<any>();
   const [q, setQ] = useState<string>("");
   const [solutionList, setSolutionList] = useState<Solution[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,7 +21,7 @@ const SolutionScreen = () => {
   };
   // 跳转到搜索
   const handleSearch = () => {
-    navigation.navigate("Search");
+    router.push("/search");
   };
   // 获取课程
   const getSolutionList = async () => {
@@ -64,12 +62,7 @@ const SolutionScreen = () => {
               onChangeText={(text) => onChangeText(text)}
             /> */}
             <Text style={styles.Slug}>{t("solution:solution")}</Text>
-            <Text
-              style={styles.Search}
-              onPress={() => navigation.navigate("Search")}
-            >
-              {t("search:search")}
-            </Text>
+            <Text style={styles.Search}>{t("search:search")}</Text>
           </View>
         </Pressable>
 

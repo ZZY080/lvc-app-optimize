@@ -1,9 +1,9 @@
 import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import { LOCALES_MAP } from "@configs/map.config";
-import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
-import { DOCUMENT, MEMBER_PROFILE } from "constants/url/url";
+import { Advisor as AdvisorType } from "@type/common/Advisor/Advisor.types";
+import { MEMBER_PROFILE } from "constants/url/url";
 import React, { Fragment, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,14 +15,12 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import AdvisorItem from "../AdvisorItem/AdvisorItem";
-import { Advisor as AdvisorType } from "@type/common/Advisor/Advisor.types";
 interface AdvisorProps {
   q: string;
   topicId: string | undefined;
 }
 const Advisor: React.FC<AdvisorProps> = ({ q, topicId }) => {
   const lang = useSelector((state: RootState) => state.language.lang);
-  const navigation = useNavigation();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(1);

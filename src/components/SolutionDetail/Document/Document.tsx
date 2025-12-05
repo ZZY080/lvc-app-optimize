@@ -4,10 +4,10 @@ import Loading from "@components/Common/Loading/Loading";
 import DocumentItem from "@components/Document/DocumentItem/DocumentItem";
 import { LOCALES_MAP } from "@configs/map.config";
 import { DOCUMENT } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
 import { Document as DocumentType } from "@type/common/Document/Document.types";
-import React, { Fragment, useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -23,7 +23,6 @@ interface DocumentProps {
 }
 const Document: React.FC<DocumentProps> = ({ q, topicId }) => {
   const lang = useSelector((state: RootState) => state.language.lang);
-  const navigation = useNavigation();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(1);
@@ -140,17 +139,18 @@ const Document: React.FC<DocumentProps> = ({ q, topicId }) => {
       setLoadingMore(false);
     }
   };
-  // 页面栈未调用
-  useEffect(() => {
-    const unsubscribeFocus = navigation.addListener("focus", () => {
+
+  useFocusEffect(
+    useCallback(() => {
+      // 页面获得焦点时执行
       setPage(1);
       setHasMore(true);
-    });
-    // 清理监听器
-    return () => {
-      unsubscribeFocus();
-    };
-  }, [navigation]);
+
+      return () => {
+        // 页面失焦时执行（可选）
+      };
+    }, [])
+  );
 
   useEffect(() => {
     if (page === 1 && hasMore) {

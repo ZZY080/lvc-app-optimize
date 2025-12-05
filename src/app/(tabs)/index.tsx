@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useState } from "react";
 import {
   Alert,
   Linking,
@@ -24,29 +24,22 @@ import {
   DOCUMENT,
   REGISTER_MEMBER,
   REGISTER_ORG,
-  USER_PROFILE,
 } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
 import { themes } from "@themes/themes";
 import { Article } from "@type/common/Article/Article.types";
 import { Course } from "@type/common/Course/Course.types";
 import { Document } from "@type/common/Document/Document.types";
-import { UserProfile } from "@type/common/User/User.types";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Search } from "lucide-react-native";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 const IndexScreen = () => {
-  // 获取屏幕宽度
-  const navigation = useNavigation<any>();
-
   // 国际化相关
   const { t, i18n } = useTranslation();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  // const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [menuList, setMenuList] = useState([
     {
       icon: <CustomIcon name="customization-fill" color="#2F6EB5" size={30} />,
@@ -77,12 +70,12 @@ const IndexScreen = () => {
     {
       icon: <CustomIcon name="product-list-fill" color="#4CAF50" size={30} />,
       text: t("index:menu:product"),
-      path: "/insight",
+      path: "/document",
     },
     {
       icon: <CustomIcon name="live-fill" color="#3DA5D9" size={30} />,
       text: t("index:menu:course"),
-      path: "/insight",
+      path: "/course",
     },
     {
       icon: <CustomIcon name="name-card-fill" color="#FF8C42" size={30} />,
@@ -100,26 +93,6 @@ const IndexScreen = () => {
 
   const [documentList, setDocumentList] = useState<Document[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-
-  // 获取用户信息
-  const getUserProfile = async (): Promise<UserProfile | null> => {
-    try {
-      const response = await fetcher(`${USER_PROFILE}`);
-      if (response.status === ACCESS_TOKEN_EXPIRE_STATUS_CODE) {
-        navigation.navigate("Login");
-        return null;
-      }
-      if (response.ok) {
-        const json = await response.json();
-        const payload = json.payload;
-        return payload;
-      }
-      return null;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  };
 
   // 获取最新发布
   const getArticleList = async () => {
@@ -164,24 +137,23 @@ const IndexScreen = () => {
 
   const getAllData = async () => {
     setLoading(true);
-    await getArticleList();
-    await getCourseList();
-    await getDocumentList();
-    setLoading(false);
+    try {
+      await Promise.all([getArticleList(), getCourseList(), getDocumentList()]);
+    } catch (error) {
+      console.error("获取数据失败:", error);
+    } finally {
+      setLoading(false);
+    }
   };
-  useEffect(() => {
-    getAllData();
-    const unsubscribeFocus = navigation.addListener("focus", () => {
-      getAllData();
-    });
 
-    const unsubscribeBlur = navigation.addListener("blur", () => {});
-
-    return () => {
-      unsubscribeFocus();
-      unsubscribeBlur();
-    };
-  }, [navigation, accessToken]);
+  useFocusEffect(
+    useCallback(() => {
+      getAllData(); // 页面进入或重新聚焦时调用
+      return () => {
+        // 页面离开时清理逻辑，可选
+      };
+    }, [accessToken]) // 如果 accessToken 改变，也会重新调用
+  );
 
   const handleMenuDetail = async (path: any) => {
     if (path === "") {
@@ -192,17 +164,16 @@ const IndexScreen = () => {
         const response = await fetcher(`${REGISTER_MEMBER}`);
         // token过期或未登录
         if (response.status === ACCESS_TOKEN_EXPIRE_STATUS_CODE) {
-          navigation.navigate("Login");
-          return;
+          return router.push("/auth/login");
         }
         if (response.ok) {
           const json = await response.json();
           const items = json.payload.items;
           if (items.length > 0 && items[0].status === "pending") {
-            return navigation.navigate("Review");
+            return router.push("/common/review");
           }
           if (items.length > 0 && items[0].status === "approved") {
-            return navigation.navigate(path);
+            return router.push(path);
           }
           return Linking.openURL(
             "https://www.leadvisor.net/en/advisors/join"
@@ -215,16 +186,16 @@ const IndexScreen = () => {
         const response = await fetcher(`${REGISTER_ORG}`);
         // token过期或未登录
         if (response.status === ACCESS_TOKEN_EXPIRE_STATUS_CODE) {
-          return navigation.navigate("Login");
+          return router.push("/auth/login");
         }
         if (response.ok) {
           const json = await response.json();
           const items = json.payload.items;
           if (items.length > 0 && items[0].status === "pending") {
-            return navigation.navigate("Review");
+            return router.push("/common/review");
           }
           if (items.length > 0 && items[0].status === "approved") {
-            return navigation.navigate(path);
+            return router.push(path);
           }
           return Linking.openURL(
             "https://www.leadvisor.net/en/advisors/service-requirement"
@@ -233,7 +204,6 @@ const IndexScreen = () => {
       } catch (error) {}
     }
     router.push(path);
-    // navigation.navigate(path);
   };
 
   return (

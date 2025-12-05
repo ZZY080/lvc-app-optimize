@@ -9,7 +9,6 @@ import { Course } from "@type/common/Course/Course.types";
 import { router } from "expo-router";
 
 import { StatusBar } from "expo-status-bar";
-import { debounce } from "lodash";
 import { ChevronLeft, Search } from "lucide-react-native";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -148,17 +147,6 @@ const CourseScreen = () => {
       setLoadingMore(false);
     }
   };
-  // useEffect(() => {
-  //   const unsubscribeFocus = navigation.addListener("focus", () => {
-  //     setQ("");
-  //     setPage(1);
-  //     setHasMore(true);
-  //   });
-
-  //   return () => {
-  //     unsubscribeFocus();
-  //   };
-  // }, [navigation, accessToken]);
 
   useEffect(() => {
     if (page === 1 && hasMore) {
@@ -176,11 +164,6 @@ const CourseScreen = () => {
     }
   }, [page, loadingMore]);
 
-  const onChangeText = debounce((text: string) => {
-    setQ(text);
-    setPage(1);
-    setHasMore(true);
-  }, 500);
   const handleBack = () => {
     router.back();
   };
@@ -227,16 +210,6 @@ const CourseScreen = () => {
         {/* 屏幕滚动 */}
         <View style={styles.ScrollWrapper}>
           <View style={styles.ScrollMain}>
-            {/* <CourseList
-              navigation={navigation}
-              accessToken={accessToken}
-              setQ={setQ}
-              q={q}
-              page={page}
-              setPage={setPage}
-              hasMore={hasMore}
-              setHasMore={setHasMore}
-            /> */}
             {loading ? (
               <Loading />
             ) : courseList.length === 0 ? (

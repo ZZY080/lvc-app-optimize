@@ -1,8 +1,5 @@
-import CustomIcon from "@components/Common/CustomIcon/CustomIcon";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -88,7 +85,7 @@ const styles = StyleSheet.create({
   FilterWrapper: {
     paddingHorizontal: 17,
     backgroundColor: "#FFFFFF",
-    boxShadow: "0px 3px 5px 0px rgba(182, 182, 182, 0.25)",
+    // boxShadow: "0px 3px 5px 0px rgba(182, 182, 182, 0.25)",
   },
   FilterMain: {
     height: 45,

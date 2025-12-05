@@ -1,5 +1,5 @@
 import { LOCALES_MAP } from "@configs/map.config";
-import { store, RootState } from "@redux/store";
+import { RootState, store } from "@redux/store";
 
 const state: RootState = store.getState();
 const lang = LOCALES_MAP[state.language.lang] == "zh" ? "nameZH" : "nameEN";
@@ -320,7 +320,7 @@ export const COUNTRIES: ICountry[] = [
     nameZH: "洪都拉斯",
     code: "HN",
   },
-  { nameEN: "Hong Kong", nameZH: "香港", code: "HK" },
+  { nameEN: "China (Hong Kong SAR)", nameZH: "中国香港", code: "HK" },
   {
     nameEN: "Hungary",
     nameZH: "匈牙利",
@@ -419,7 +419,7 @@ export const COUNTRIES: ICountry[] = [
     nameZH: "卢森堡",
     code: "LU",
   },
-  { nameEN: "Macao", nameZH: "澳门", code: "MO" },
+  { nameEN: "China (Macao SAR)", nameZH: "中国澳门", code: "MO" },
   {
     nameEN: "Macedonia, The Former Yugoslav Republic of",
     nameZH: "马其顿,前南斯拉夫共和国",
@@ -686,7 +686,6 @@ export const COUNTRIES: ICountry[] = [
     nameZH: "阿拉伯叙利亚共和国",
     code: "SY",
   },
-  { nameEN: "Taiwan, Province of China", nameZH: "中国台湾省", code: "TW" },
   {
     nameEN: "Tajikistan",
     nameZH: "塔吉克斯坦",

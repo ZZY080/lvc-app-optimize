@@ -1,6 +1,5 @@
 import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
-import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
 
 import { AdvisorDetail } from "@type/common/Advisor/Advisor.types";
@@ -28,7 +27,6 @@ const AdvisorDetailScreen = () => {
 
   const lang = useSelector((state: RootState) => state.language.lang);
   const { t } = useTranslation();
-  const navigation = useNavigation();
   // 默认激活第一个
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);

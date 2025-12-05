@@ -4,7 +4,6 @@ import Loading from "@components/Common/Loading/Loading";
 import WebinarItem from "@components/Webinar/WebinarItem/WebinarItem";
 import { LOCALES_MAP } from "@configs/map.config";
 import { WEBINAR } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
 import { Webinar as WebinarType } from "@type/common/Webinar/Webinar.types";
 import { Fragment, useEffect, useState } from "react";
@@ -23,7 +22,6 @@ interface WebinarProps {
 }
 const Webinar: React.FC<WebinarProps> = ({ q, topicId }) => {
   const lang = useSelector((state: RootState) => state.language.lang);
-  const navigation = useNavigation();
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const { t } = useTranslation();
   const [webinarList, setWebinarList] = useState<WebinarType[]>([]);

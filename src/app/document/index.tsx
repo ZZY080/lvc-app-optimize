@@ -137,17 +137,6 @@ const DocumentScreen = () => {
       setLoadingMore(false);
     }
   };
-  // useEffect(() => {
-  //   const unsubscribeFocus = navigation.addListener("focus", () => {
-  //     setQ("");
-  //     setPage(1);
-  //     setHasMore(true);
-  //   });
-
-  //   return () => {
-  //     unsubscribeFocus();
-  //   };
-  // }, [navigation, accessToken]);
 
   useEffect(() => {
     if (page === 1 && hasMore) {

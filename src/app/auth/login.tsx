@@ -1,6 +1,5 @@
 import { fetcher } from "@api/request";
 import { LOGIN } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { login } from "@redux/slices/authSlice";
 import { emailFormatCheck } from "@utils/email/email";
 import { router } from "expo-router";
@@ -22,8 +21,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { useDispatch } from "react-redux";
 const LoginScreen = () => {
-  const navigation = useNavigation<any>();
-
   const [isShow, setIsShow] = useState<boolean>(false);
   const [isChecked, setChecked] = useState(false);
   const [email, setEmail] = useState<string>("");
@@ -34,7 +31,7 @@ const LoginScreen = () => {
   const { t, i18n } = useTranslation();
 
   const handleBack = () => {
-    navigation.goBack();
+    router.back();
   };
   const handleFocus = (ref: React.RefObject<TextInput | null>) => {
     if (ref.current) {
@@ -92,9 +89,12 @@ const LoginScreen = () => {
         router.replace("/"); // 直接跳转到首页，并清空当前页面栈
       }
       if (registerToken) {
-        navigation.navigate("ActiveAccount", {
-          registerToken,
-          from: "login",
+        router.push({
+          pathname: "/common/active-account",
+          params: {
+            registerToken,
+            from: "login",
+          },
         });
       }
     } catch (error) {

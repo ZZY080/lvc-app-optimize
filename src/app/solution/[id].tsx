@@ -66,14 +66,14 @@ const SolutionDetailScreen = () => {
       icon: <Users color={"#333179"} size={30} strokeWidth={0.8} />,
       title: t("solution:support"),
       description: t("solution:support-desc"),
-      path: "Login",
+      path: "/auth/login",
       hint: t("solution:contact-us"),
     },
     {
       icon: <BriefcaseBusiness color={"#333179"} size={30} strokeWidth={0.8} />,
       title: t("solution:advisors"),
       description: t("solution:need-service"),
-      path: "Advisor",
+      path: "/counselor",
       hint: t("solution:browser-advisors"),
     },
   ]);

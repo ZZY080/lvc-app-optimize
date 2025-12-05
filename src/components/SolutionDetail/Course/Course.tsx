@@ -3,10 +3,10 @@ import Empty from "@components/Common/Empty/Empty";
 import Loading from "@components/Common/Loading/Loading";
 import CourseItem from "@components/Course/CourseItem/CourseItem";
 import { COURSE } from "@constants/url/url";
-import { useNavigation } from "@react-navigation/native";
 import { RootState } from "@redux/store";
 import { Course as CourseType } from "@type/common/Course/Course.types";
-import { Fragment, useEffect, useState } from "react";
+import { useFocusEffect } from "expo-router";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
@@ -23,7 +23,6 @@ interface CourseProps {
 const Course: React.FC<CourseProps> = ({ q, topicId }) => {
   const lang = useSelector((state: RootState) => state.language.lang);
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
-  const navigation = useNavigation<any>();
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(1); // 页码
   const [pageSize, setPageSize] = useState<number>(10); // 每页数据条数
@@ -136,16 +135,18 @@ const Course: React.FC<CourseProps> = ({ q, topicId }) => {
       setLoadingMore(false);
     }
   };
-  useEffect(() => {
-    const unsubscribeFocus = navigation.addListener("focus", () => {
+
+  useFocusEffect(
+    useCallback(() => {
+      // 页面进入时重新初始化
       setPage(1);
       setHasMore(true);
-    });
 
-    return () => {
-      unsubscribeFocus();
-    };
-  }, [navigation, accessToken]);
+      return () => {
+        // 页面跳走时触发，可用于清理
+      };
+    }, [accessToken])
+  );
 
   useEffect(() => {
     if (page === 1 && hasMore) {
